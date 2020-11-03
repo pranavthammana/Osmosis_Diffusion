@@ -2,7 +2,7 @@
 """
 Created on Tue Oct 27 22:11:00 2020
 
-@author: vtham
+@author: Pranav
 """
 
 import random as rand
