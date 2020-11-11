@@ -41,7 +41,7 @@ class Point:
 #This is the looping mechanism per se - does 100 trajectories over 100 time intervals
 d_coeff = {}
 trajectory_compilation = dict() #Will be a dictionary with key being trajectory number and entry being a list with x values
-for percent in range(1,3):
+for percent in range(1,34):
     for i in range(100):
         point = Point(0, percent)
         for j in range(100):
@@ -96,7 +96,7 @@ for percent in range(1,3):
     
     plt.xlabel('x position at ' + str(percent))
     plt.ylabel('frequency')
-    plt.title(r'$\mathrm{Histogram\ of\ X Position:}\ \mu=%.3f,\ \sigma=%.3f$' %(mu, sigma))
+    plt.title(r'$\mathrm{Histogram\ of\ X\ Position\ at\ } %i\ \mu=%.3f,\ \sigma=%.3f$' %(int(percent), mu, sigma))
     
     plt.show()
     
