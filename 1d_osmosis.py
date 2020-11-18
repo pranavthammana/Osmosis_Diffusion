@@ -15,8 +15,6 @@ import numpy as np
 
 from scipy.stats import norm
 
-import matplotlib.mlab as mlab
-
 #Point class setup - basically allows me to get one simulation done
 class Point:
     def __init__(self, pos, percent):
@@ -40,8 +38,12 @@ class Point:
 
 #This is the looping mechanism per se - does 100 trajectories over 100 time intervals
 d_coeff = {}
-trajectory_compilation = dict() #Will be a dictionary with key being trajectory number and entry being a list with x values
+big_compilation = dict()
+for i in range(100):
+    big_compilation[i] = []
+
 for percent in range(1,34):
+    trajectory_compilation = dict() #Will be a dictionary with key being trajectory number and entry being a list with x values
     for i in range(100):
         point = Point(0, percent)
         for j in range(100):
@@ -100,10 +102,56 @@ for percent in range(1,34):
     
     plt.show()
     
+    for i in trajectory_compilation.keys():
+        for index in range(len(trajectory_compilation[i])-1):
+            big_compilation[index].append(trajectory_compilation[i][index])
+        
 
 y_vals = []
 for i in d_coeff.keys():
     y_vals.append(d_coeff[i])
 
 plt.scatter(list(d_coeff.keys()), y_vals)
+plt.xlabel('percentage')
+plt.ylabel('diffusion coefficient')
+plt.title('diffusion coefficient vs percentage')
+plt.show()
 
+
+df = pd.DataFrame(data=big_compilation) #data frame from which work will be done from for now
+
+plt.plot(df.mean(0))
+
+plt.xlabel('time')
+plt.ylabel('x position')
+plt.title('Mean for total')
+
+plt.show()
+
+plt.plot(np.square(df).mean(0))
+
+plt.xlabel('time')
+plt.ylabel('x position')
+plt.title('Mean square for total')
+
+plt.show()
+
+list_of_x = []
+for i in trajectory_compilation.keys():
+    for j in trajectory_compilation[i]:
+        list_of_x.append(j)
+bins = max(list_of_x) - min(list_of_x)
+
+(mu, sigma) = norm.fit(list_of_x)
+
+y = norm.pdf( bins, mu, sigma)
+
+l = plt.plot(bins, y, 'r--', linewidth=2)
+
+plt.hist(list_of_x, bins = bins)
+
+plt.xlabel('x position at ' + str(percent))
+plt.ylabel('frequency')
+plt.title(r'$\mathrm{Histogram\ of\ X\ Position\ at\ total\ } \mu=%.3f,\ \sigma=%.3f$' %(mu, sigma))
+
+plt.show()
