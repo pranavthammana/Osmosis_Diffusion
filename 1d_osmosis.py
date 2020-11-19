@@ -137,8 +137,8 @@ plt.title('Mean square for total')
 plt.show()
 
 list_of_x = []
-for i in trajectory_compilation.keys():
-    for j in trajectory_compilation[i]:
+for i in big_compilation.keys():
+    for j in big_compilation[i]:
         list_of_x.append(j)
 bins = max(list_of_x) - min(list_of_x)
 
@@ -150,7 +150,7 @@ l = plt.plot(bins, y, 'r--', linewidth=2)
 
 plt.hist(list_of_x, bins = bins)
 
-plt.xlabel('x position at ' + str(percent))
+plt.xlabel('x position for all probabilities')
 plt.ylabel('frequency')
 plt.title(r'$\mathrm{Histogram\ of\ X\ Position\ at\ total\ } \mu=%.3f,\ \sigma=%.3f$' %(mu, sigma))
 
