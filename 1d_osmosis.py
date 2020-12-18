@@ -9,9 +9,13 @@ import random as rand
 
 import pandas as pd
 
+import csv as csv
+
 import matplotlib.pyplot as plt
 
 import numpy as np
+
+import pandas as pd
 
 from scipy.stats import norm
 
@@ -38,16 +42,52 @@ class Point:
 
 
 for percent in range(1, 34):
-    trajectory_compilation = dict()
-    for point in range(100):
-        p = Point(0, percent)
+    trajectory_compilation = dict() #Dictionary with key being trial number
+    for point in range(100):        #Spawing in 100 points
+        p = Point(0, percent)       
         for update in range(100):
             p.pos_update()
         trajectory_compilation[point] = p.pos_track
+    '''
+    d = trajectory_compilation
+    keys = sorted(d.keys())
+    with open("test.csv", "wt") as outfile:
+       writer = csv.writer(outfile, delimiter = ",")
+       writer.writerow(keys)
+       writer.writerows([d[key] for key in keys])
     
-    df = pd.DataFrame.from_dict(data = trajectory_compilation)
-
-
+    '''
+    df = pd.DataFrame(trajectory_compilation)   #Turning trajectory_compilation into dataframe
+    x_vals = df.loc[99]                         #x_vals = dataframe with only last row
+    '''
+    df.to_csv('test2.csv')
+    '''
+    (mu, sigma) = norm.fit(x_vals)              #Specifically doing stats stuff to find mu and sigma - sigma is standard deviation and mu is mean
+    
+    y = norm.pdf(mu, sigma)
+    
+    plt.hist(x_vals, bins = percent)
+    plt.title(r'$\mathrm{Histogram\ of\ X\ Position\ at\ } %i\ \mu=%.3f,\ \sigma=%.3f$' %(int(percent), mu, sigma))
+    plt.show()
+    
+    dff = df.mean(1)                            #Finding mean over all columns (so collapsing columns)
+    
+    plt.plot(dff)                               #Line plot of dff
+    
+    plt.title(f"Mean of X position vs. Time for percent = {percent}")
+    plt.xlabel("time")
+    plt.ylabel("position")
+    plt.show()
+    
+    squared = np.square(df).mean(1)             #Squares and finds the mean over all columns
+'''    
+    squared.to_csv('test3.csv')
+    '''
+    plt.plot(squared.values.tolist())           #plots all the values in squared which are in an organized list in chronological order
+    plt.title(f"Mean squared of X position vs. Time for percent = {percent}")
+    plt.xlabel("time")
+    plt.ylabel("position")
+    
 '''#This is the looping mechanism per se - does 100 trajectories over 100 time intervals
 d_coeff = {}
 big_compilation = dict()
