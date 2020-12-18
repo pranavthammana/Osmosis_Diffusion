@@ -40,7 +40,8 @@ class Point:
         self.pos_track.append(self.pos)
         return 0
 
-
+d_coeffs = []
+big_comp = []
 for percent in range(1, 34):
     trajectory_compilation = dict() #Dictionary with key being trial number
     for point in range(100):        #Spawing in 100 points
@@ -59,6 +60,7 @@ for percent in range(1, 34):
     '''
     df = pd.DataFrame(trajectory_compilation)   #Turning trajectory_compilation into dataframe
     x_vals = df.loc[99]                         #x_vals = dataframe with only last row
+    big_comp.append(list(df.loc[99]))
     '''
     df.to_csv('test2.csv')
     '''
@@ -80,13 +82,29 @@ for percent in range(1, 34):
     plt.show()
     
     squared = np.square(df).mean(1)             #Squares and finds the mean over all columns
-'''    
+    '''    
     squared.to_csv('test3.csv')
     '''
     plt.plot(squared.values.tolist())           #plots all the values in squared which are in an organized list in chronological order
     plt.title(f"Mean squared of X position vs. Time for percent = {percent}")
     plt.xlabel("time")
     plt.ylabel("position")
+    plt.show()
+    list_of_100 = []
+    for i in range(101):
+        list_of_100.append(i)
+    
+    m, b = np.polyfit(list_of_100, np.square(df).mean(1), 1)
+    d_coeffs.append(m)
+    
+plt.plot(d_coeffs)
+plt.xlablel("Percent")
+plt.ylabel("Diffusion coefficient")
+plt.title("Coefficient of Diffusion versus percent chance of moving")
+plt.show()
+
+plt.hist(big_comp, bins = 34)
+plt.title("Total")
     
 '''#This is the looping mechanism per se - does 100 trajectories over 100 time intervals
 d_coeff = {}
