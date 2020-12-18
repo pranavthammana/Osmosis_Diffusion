@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
+from scipy.stats import norm
+
 import pandas as pd
 
 from scipy.stats import norm
@@ -41,6 +43,7 @@ class Point:
         return 0
 
 d_coeffs = []
+MSD_coeffs = []
 big_comp = []
 for percent in range(1, 34):
     trajectory_compilation = dict() #Dictionary with key being trial number
@@ -60,15 +63,15 @@ for percent in range(1, 34):
     '''
     df = pd.DataFrame(trajectory_compilation)   #Turning trajectory_compilation into dataframe
     x_vals = df.loc[99]                         #x_vals = dataframe with only last row
-    big_comp.append(list(df.loc[99]))
+    big_comp.append(list(x_vals))
     '''
     df.to_csv('test2.csv')
     '''
     (mu, sigma) = norm.fit(x_vals)              #Specifically doing stats stuff to find mu and sigma - sigma is standard deviation and mu is mean
-    
+    MSD_coeffs.append(sigma**2/100)
     y = norm.pdf(mu, sigma)
     
-    plt.hist(x_vals, bins = percent)
+    plt.hist(x_vals, bins = percent+2)
     plt.title(r'$\mathrm{Histogram\ of\ X\ Position\ at\ } %i\ \mu=%.3f,\ \sigma=%.3f$' %(int(percent), mu, sigma))
     plt.show()
     
@@ -80,6 +83,7 @@ for percent in range(1, 34):
     plt.xlabel("time")
     plt.ylabel("position")
     plt.show()
+
     
     squared = np.square(df).mean(1)             #Squares and finds the mean over all columns
     '''    
@@ -98,13 +102,30 @@ for percent in range(1, 34):
     d_coeffs.append(m)
     
 plt.plot(d_coeffs)
-plt.xlablel("Percent")
+plt.xlabel("Percent")
 plt.ylabel("Diffusion coefficient")
 plt.title("Coefficient of Diffusion versus percent chance of moving")
 plt.show()
 
-plt.hist(big_comp, bins = 34)
-plt.title("Total")
+plt.plot(d_coeffs, MSD_coeffs, 'o', color='black')
+
+plt.xlabel("Diffusion coefficient from mean square graph")
+plt.ylabel("MSD Coefficient")
+plt.title("Diffusion coefficient from mean square versus MSD coefficient")
+plt.show()
+m, b = np.polyfit(d_coeffs, MSD_coeffs, 1)
+print(m)
+big_comp2 = []
+for i in big_comp:
+    for j in i:
+        big_comp2.append(j)
+plt.hist(big_comp2, bins = 34)
+(mu, sigma) = norm.fit(big_comp2)
+
+mu = round(mu, 3)
+sigma = round(sigma, 3)
+plt.title(f"Histogram of positions for all percentage chancees of moving  mu = {mu}  sigma = {sigma}")
+
     
 '''#This is the looping mechanism per se - does 100 trajectories over 100 time intervals
 d_coeff = {}
