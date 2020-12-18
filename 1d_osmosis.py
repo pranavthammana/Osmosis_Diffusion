@@ -15,6 +15,7 @@ import numpy as np
 
 from scipy.stats import norm
 
+
 #Point class setup - basically allows me to get one simulation done
 class Point:
     def __init__(self, pos, percent):
@@ -36,7 +37,18 @@ class Point:
         return 0
 
 
-#This is the looping mechanism per se - does 100 trajectories over 100 time intervals
+for percent in range(1, 34):
+    trajectory_compilation = dict()
+    for point in range(100):
+        p = Point(0, percent)
+        for update in range(100):
+            p.pos_update()
+        trajectory_compilation[point] = p.pos_track
+    
+    df = pd.DataFrame.from_dict(data = trajectory_compilation)
+
+
+'''#This is the looping mechanism per se - does 100 trajectories over 100 time intervals
 d_coeff = {}
 big_compilation = dict()
 for i in range(100):
@@ -82,19 +94,16 @@ for percent in range(1,34):
     
     plt.show()
     
-    list_of_x = []
-    for i in trajectory_compilation.keys():
-        for j in trajectory_compilation[i]:
-            list_of_x.append(j)
-    bins = max(list_of_x) - min(list_of_x)
+
+    bins = max(trajectory_compilation['t99']) - min(trajectory_compilation['t99'])
     
-    (mu, sigma) = norm.fit(list_of_x)
+    (mu, sigma) = norm.fit(trajectory_compilation['t99'])
     
     y = norm.pdf( bins, mu, sigma)
     
     l = plt.plot(bins, y, 'r--', linewidth=2)
 
-    plt.hist(list_of_x, bins = bins)
+    plt.hist(trajectory_compilation['t99'], bins = bins)
     
     plt.xlabel('x position at ' + str(percent))
     plt.ylabel('frequency')
@@ -154,4 +163,4 @@ plt.xlabel('x position for all probabilities')
 plt.ylabel('frequency')
 plt.title(r'$\mathrm{Histogram\ of\ X\ Position\ at\ total\ } \mu=%.3f,\ \sigma=%.3f$' %(mu, sigma))
 
-plt.show()
+plt.show()'''
