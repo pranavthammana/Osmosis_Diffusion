@@ -7,9 +7,7 @@ Created on Tue Oct 27 22:11:00 2020
 
 import random as rand
 
-import pandas as pd
-
-import csv as csv
+import csv
 
 import matplotlib.pyplot as plt
 
@@ -123,4 +121,3 @@ for i in big_comp:
 y = norm.pdf(mu, sigma)
 plt.hist(big_comp2, bins=34)
 plt.title(f"Histogram for total X position for all percents mu={mu} sigma={sigma}")
-
