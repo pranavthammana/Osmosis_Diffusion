@@ -15,8 +15,6 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-import pandas as pd
-
 from scipy.stats import norm
 
 
@@ -105,6 +103,16 @@ plt.plot(d_coeffs)
 plt.xlabel("Percent")
 plt.ylabel("Diffusion coefficient")
 plt.title("Coefficient of Diffusion versus percent chance of moving")
+plt.show()
+
+theoretical_d = []
+for i in range(1, 34):
+    theoretical_d.append((i*2/100)**2)
+
+plt.plot(theoretical_d, d_coeffs)
+plt.xlabel("Theoretical Diffusion Coefficient")
+plt.ylabel("Experimental Diffusion coefficient")
+plt.title("Theoretical versus Experimental Diffusion Coefficient")
 plt.show()
 
 big_comp2 = []
