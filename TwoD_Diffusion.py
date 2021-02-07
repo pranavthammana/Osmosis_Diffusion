@@ -65,7 +65,7 @@ for percent in range(1, 34):
     plt.plot(percent_msr)
     plt.xlabel("Time")
     plt.ylabel("Distance from Origin")
-    plt.title("Mean Square Root - Percent = " + percent)
+    plt.title("Mean Square Root - Percent = " + str(percent))
     plt.show()
 
     position = []
@@ -79,7 +79,7 @@ for percent in range(1, 34):
     plt.scatter(time, position)
     plt.xlabel("Time")
     plt.ylabel("Distance from Origin")
-    plt.title("Chance of moving: " percent)
+    plt.title("Chance of moving: " + str(percent))
     plt.show()
 
     m, b = np.polyfit(time, position, 1)
