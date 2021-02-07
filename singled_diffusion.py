@@ -15,6 +15,7 @@ import numpy as np
 
 from scipy.stats import norm
 
+import pandas as pd
 
 # Point class setup - basically allows me to get one simulation done
 class Point:
