@@ -126,6 +126,16 @@ for percent in range(1, 34, 2):
     plt.scatter(X_Mean, Y_Mean)
     plt.show()
 
+
+    X_Vals = []
+    for i in X_Array2:
+        for j in X_Array2:
+            X_Vals.append(j)
+    print(len(X_Vals))
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    #X, Y, Z =
+
 percents = []
 for i in range(1, 34):
     percents.append(i)
