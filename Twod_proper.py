@@ -8,7 +8,7 @@ import random as rand
 
 import sys
 
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits import mplot3d
 
 
 def calculate_delta(percent):
@@ -24,7 +24,7 @@ def calculate_delta(percent):
 data = {}
 diffusion_coefficients_y = []
 diffusion_coefficients_x = []
-for percent in range(1, 34, 2):
+for percent in range(1, 15, 2):
     data[percent] = np.zeros((100, 100), dtype=object)
     for point in range(len(data[percent])):
         # For loop that simulates a point updating 100 times
@@ -55,7 +55,6 @@ for percent in range(1, 34, 2):
     plt.xlabel("Position")
     plt.ylabel("Frequency")
     plt.show()
-
     X_Array = np.zeros((100, 100))
     for point in range(len(X_Array)):
         for time in range(len(X_Array)):
@@ -96,15 +95,16 @@ for percent in range(1, 34, 2):
 
     X_mean_square = []
     Y_mean_square = []
-
+    X_Array2placeholder = X_Array2.copy()
+    Y_Array2placeholder = Y_Array2.copy()
     for time in range(len(X_Array2)):
         for position in range(len(X_Array2[time])):
-            X_Array2[time][position] = X_Array2[time][position] ** 2
-        X_mean_square.append(np.mean(X_Array2[time]))
+            X_Array2placeholder[time][position] = X_Array2[time][position] ** 2
+        X_mean_square.append(np.mean(X_Array2placeholder[time]))
     for time in range(len(Y_Array2)):
         for position in range(len(Y_Array2[time])):
-            Y_Array2[time][position] = Y_Array2[time][position] ** 2
-        Y_mean_square.append(np.mean(Y_Array2[time]))
+            Y_Array2placeholder[time][position] = Y_Array2[time][position] ** 2
+        Y_mean_square.append(np.mean(Y_Array2placeholder[time]))
 
     plt.plot(T_Vals, X_mean_square)
     plt.xlabel("Time")
@@ -122,26 +122,34 @@ for percent in range(1, 34, 2):
     m_y, b_y = np.polyfit(T_Vals, Y_mean_square, 1)
     diffusion_coefficients_x.append(m_x)
     diffusion_coefficients_y.append(m_y)
-    
-    plt.scatter(X_Mean, Y_Mean)
-    plt.show()
 
 
     X_Vals = []
     for i in X_Array2:
-        for j in X_Array2:
+        for j in i:
             X_Vals.append(j)
-    print(len(X_Vals))
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    #X, Y, Z =
+    Y_Vals = []
+    for i in Y_Array2:
+        for j in i:
+            Y_Vals.append(j)
+    T_Vals2 = []
+    placeholder = []
+    for i in range(100):
+        for j in range(100):
+            T_Vals2.append([i])
+    X_Vals = X_Vals[::-1]
+    Y_Vals = Y_Vals[::-1]
+    T_Vals2 = T_Vals2[::-1]
+    cm = plt.cm.get_cmap('RdYlBu')
+    sc = plt.scatter(X_Vals, Y_Vals, c=T_Vals2, cmap=cm)
+    plt.colorbar(sc)
+    plt.show(sc)
+    print(np.mean(T_Vals2))
 
 percents = []
-for i in range(1, 34):
+for i in range(1, 15, 2):
     percents.append(i)
-
-
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-ax.contour3D(diffusion_coefficients_x, diffusion_coefficients_y, percents, zdir='z', s=20, c=None, depthshade=True)
-
+cm = plt.cm.get_cmap('RdYlBu')
+sc = plt.scatter(diffusion_coefficients_x, diffusion_coefficients_y, c=percents, cmap=cm)
+plt.colorbar(sc)
+plt.show(sc)
