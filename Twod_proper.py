@@ -141,15 +141,19 @@ for percent in range(1, 15, 2):
     Y_Vals = Y_Vals[::-1]
     T_Vals2 = T_Vals2[::-1]
     cm = plt.cm.get_cmap('RdYlBu')
-    sc = plt.scatter(X_Vals, Y_Vals, c=T_Vals2, cmap=cm)
-    plt.colorbar(sc)
-    plt.show(sc)
+    plt.scatter(X_Vals, Y_Vals, c=T_Vals2, cmap=cm)
+    plt.colorbar().set_label('Time')
+    plt.xlabel('X position')
+    plt.ylabel('Y position')
+    plt.title('Position of points over time')
+    plt.show()
     print(np.mean(T_Vals2))
 
 percents = []
 for i in range(1, 15, 2):
     percents.append(i)
 cm = plt.cm.get_cmap('RdYlBu')
-sc = plt.scatter(diffusion_coefficients_x, diffusion_coefficients_y, c=percents, cmap=cm)
-plt.colorbar(sc)
-plt.show(sc)
+plt.scatter(diffusion_coefficients_x, diffusion_coefficients_y, c=percents, cmap=cm)
+plt.colorbar()
+plt.xlabel()
+plt.show()
