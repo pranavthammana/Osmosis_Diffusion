@@ -24,7 +24,7 @@ def calculate_delta(percent):
 data = {}
 diffusion_coefficients_y = []
 diffusion_coefficients_x = []
-for percent in range(1, 15, 2):
+for percent in range(1, 35, 2):
     data[percent] = np.zeros((100, 100), dtype=object)
     for point in range(len(data[percent])):
         # For loop that simulates a point updating 100 times
@@ -140,7 +140,7 @@ for percent in range(1, 15, 2):
     X_Vals = X_Vals[::-1]
     Y_Vals = Y_Vals[::-1]
     T_Vals2 = T_Vals2[::-1]
-    cm = plt.cm.get_cmap('RdYlBu')
+    cm = plt.cm.get_cmap('winter')
     plt.scatter(X_Vals, Y_Vals, c=T_Vals2, cmap=cm)
     plt.colorbar().set_label('Time')
     plt.xlabel('X position')
@@ -150,10 +150,11 @@ for percent in range(1, 15, 2):
     print(np.mean(T_Vals2))
 
 percents = []
-for i in range(1, 15, 2):
+for i in range(1, 35, 2):
     percents.append(i)
-cm = plt.cm.get_cmap('RdYlBu')
+cm = plt.cm.get_cmap('winter')
 plt.scatter(diffusion_coefficients_x, diffusion_coefficients_y, c=percents, cmap=cm)
-plt.colorbar()
-plt.xlabel()
+plt.colorbar().set_label('Chance of movement')
+plt.xlabel('X Diffusion Coefficient')
+plt.ylabel('Y Diffusion Coefficient')
 plt.show()
